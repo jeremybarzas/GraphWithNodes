@@ -33,13 +33,13 @@ def get_node(idfier, graph):
 def get_neighbors(node, graph):
     '''Gets the neighbors of the given node within the given graph'''
     print "get_neighbors() was called."
-    tmpnode = get_node(node._identifier, graph)
+    tmpnode = get_node(node.identifier, graph)
 
 
 def main():
     ''' main body function'''
     print "This is the main function."
-    nodelist = [Node(0, 'A'), Node(1, 'B'), Node(2, 'C')]
+    nodelist = [Node(0, [0, 0]), Node(1, [0, 1]), Node(2, [0, 2]), Node(3, [1, 0]), Node(4, [1, 1]), Node(5, [1, 2]), Node(6, [2, 0]), Node(7, [2, 1]), Node(8, [2, 2])]
     graph = Graph(nodelist, 3, 3)
     node = get_node(0, graph)
     node.print_info()
@@ -51,4 +51,5 @@ def main():
     node.print_info()
 
 if __name__ == "__main__":
+    print "GraphWithNodes"
     main()
