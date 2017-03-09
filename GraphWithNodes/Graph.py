@@ -56,27 +56,20 @@ def get_neighbors(node, graph):
     dirs = [right, top, left, down]
     neighbors = []
     for i in dirs:
-        nodekey = str(node.value[0] + i[0]), ',', str(node.value[1] + i[1])
-        if graph.get_node(nodekey) is not None:
+        nodekey = [node.value[0] + i[0], node.value[1] + i[1]]
+        if graph.get_node(nodekey):
             neighbors.append(graph.get_node(nodekey))
-    for i in neighbors:
-        i.print_info()
+
+    return neighbors
 
 
 def test_graph():
     '''abc'''
     graph = Graph([3, 3])
-    node = graph.get_node([1, 1])
-    node.print_info()
-    print node.value
-
-    get_neighbors([1, 1], graph)
-
-    jeremy = Node(["jeremy", 25, 'm', "bad"], 0)
-    nick = Node(["nick", 25, 25], 1)
-    nick.print_info()
-    jeremy.print_info()
-    get_neighbors(node, graph)
+    n = graph.get_node([1, 1])
+    nays = get_neighbors(n, graph)
+    for i in nays:
+        i.print_info()
 
 
 if __name__ == "__main__":
