@@ -34,7 +34,7 @@ def get_node(indentifier, graph):
 def get_neighbors(node, graph):
     '''Gets the neighbors of the given node within the given graph'''
     print "get_neighbors() was called."
-    # tmpnode = get_node(node._identifier, graph)
+    tmpnode = get_node(node._identifier, graph)
 
 
 def main():
