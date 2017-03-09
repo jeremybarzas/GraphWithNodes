@@ -2,6 +2,7 @@
 
 
 class Node(object):
+
     '''The Node object'''
 
     def __init__(self, identifier, val):
