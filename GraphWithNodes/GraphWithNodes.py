@@ -1,30 +1,59 @@
-class Node:
-    '''The Node object'''
-    def __init__(self, val, id):
-        self.value = val
-        self.identifier = id
+'''node module to use '''
 
-class Graph:   
-    ''' The Graph object'''     
-    def __init__(self, n):
-        self.nodes = n                
-    def getnode(self, id):
-        ''' Returns the node with the given id'''       
-        for node in self.nodes:
-            if node.identifier == id:
-                return node.identifier
-        return "Node Not Found"
-                
+
+class Node(object):
+    '''The Node object'''
+
+    def __init__(self, identifier, val):
+        self._identifier = identifier
+        self._value = val
+
+    @property
+    def identifier(self):
+        '''abc'''
+        return self._identifier
+
+    def print_info(self):
+        '''abc'''
+        print "ID:", self._identifier, ", Value:", self._value
+
+
+class Graph(object):
+    ''' The Graph object'''
+
+    def __init__(self, n, x, y):
+        self._nodes = n
+        self._xsize = x
+        self._ysize = y
+
+
+def get_node(indentifier, graph):
+    ''' Returns the node with the given id within the given graph'''
+    for node in graph._nodes:
+        if node._identifier == indentifier:
+            return node
+    return Node(id, "No node with this id found.")
+
+
+def get_neighbors(node, graph):
+    '''Gets the neighbors of the given node within the given graph'''
+    print "get_neighbors() was called."
+    # tmpnode = get_node(node._identifier, graph)
+
+
 def main():
     ''' main body function'''
-    nodelist = [Node('A', 0), Node('B', 1), Node('C', 2), Node('D', 3), Node('E', 4), Node('F', 5), Node('G', 6), Node('H', 7), Node('I', 8)]
-    graph = Graph(nodelist)
-    print graph.getnode(0)
-    print graph.getnode(1)
-    print graph.getnode(2)
-    print graph.getnode(3)
-    print graph.getnode(4)
-    
+    print "This is the main function."
+    nodelist = [Node(0, 'A'), Node(1, 'B'), Node(2, 'C')]
+    graph = Graph(nodelist, 3, 3)
+    node = get_node(0, graph)
+    node.print_info()
+    node = get_node(1, graph)
+    node.print_info()
+    node = get_node(2, graph)
+    node.print_info()
+    node = get_node(9, graph)
+    node.print_info()
+
 if __name__ == "__main__":
-    print "\nThis is the main function\n"
     main()
