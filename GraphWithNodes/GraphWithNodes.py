@@ -8,11 +8,6 @@ class Node(object):
         self._identifier = identifier
         self._value = val
 
-    @property
-    def identifier(self):
-        '''abc'''
-        return self._identifier
-
     def print_info(self):
         '''abc'''
         print "ID:", self._identifier, ", Value:", self._value
