@@ -2,15 +2,24 @@
 
 
 class Node(object):
-
     '''The Node object'''
 
     def __init__(self, identifier, val):
         self._identifier = identifier
         self._value = val
 
+    @property
+    def identifier(self):
+        '''Get the indentifier'''
+        return self._identifier
+
+    @property
+    def value(self):
+        '''Get the value'''
+        return self._value
+
     def print_info(self):
-        '''abc'''
+        '''Print the Nodes info'''
         print "ID:", self._identifier, ", Value:", self._value
 
 
@@ -22,13 +31,18 @@ class Graph(object):
         self._xsize = x
         self._ysize = y
 
+    @property
+    def nodes(self):
+        '''Get the list of nodes'''
+        return self._nodes
 
-def get_node(indentifier, graph):
+
+def get_node(idfier, graph):
     ''' Returns the node with the given id within the given graph'''
-    for node in graph._nodes:
-        if node._identifier == indentifier:
+    for node in graph.nodes:
+        if node.identifier == idfier:
             return node
-    return Node(id, "No node with this id found.")
+    return Node(idfier, "No node with this id found.")
 
 
 def get_neighbors(node, graph):
