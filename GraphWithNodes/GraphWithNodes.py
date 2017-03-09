@@ -4,37 +4,22 @@
 class Node(object):
     '''The Node object'''
 
-    def __init__(self, identifier, val):
-        self._identifier = identifier
-        self._value = val
-
-    @property
-    def identifier(self):
-        '''Get the indentifier'''
-        return self._identifier
-
-    @property
-    def value(self):
-        '''Get the value'''
-        return self._value
+    def __init__(self, idfier, val):
+        self.identifier = idfier
+        self.value = val
 
     def print_info(self):
         '''Print the Nodes info'''
-        print "ID:", self._identifier, ", Value:", self._value
+        print "ID:", self.identifier, ", Value:", self.value
 
 
 class Graph(object):
     ''' The Graph object'''
 
     def __init__(self, n, x, y):
-        self._nodes = n
-        self._xsize = x
-        self._ysize = y
-
-    @property
-    def nodes(self):
-        '''Get the list of nodes'''
-        return self._nodes
+        self.nodes = n
+        self.xsize = x
+        self.ysize = y
 
 
 def get_node(idfier, graph):
