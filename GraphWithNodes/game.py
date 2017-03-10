@@ -67,7 +67,6 @@ while not DONE:
     for n in current.adjacents:
         n.color = GREEN
 
-
     for i in range(20, 30):
         NODES[i].color = BLUE
 
