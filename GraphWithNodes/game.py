@@ -59,6 +59,7 @@ while not DONE:
     # Draw a circle
     for i in NODES:
         i.draw(SCREEN, font1)
+    NODES[15].color = BLUE
 
     # Go ahead and update the SCREEN with what we've drawn.
     # This MUST happen after all the other drawing commands.

@@ -107,24 +107,3 @@ class DrawableNode(object):
         # pygame.draw.rect(screen, self._color, self.rect)
         self.surface.fill(self._color)
         screen.blit(self.surface, self.screenpos)
-        if self.walkable:
-            # create some text to go on the fill
-
-            # info to display
-
-            # render the text
-
-            # textf = font.render("F= " + str(self.f), True, (1, 1, 1))
-            # textg = font.render("G= " + str(self.g) +
-                                # "H= " + str(self.h), True, (1, 1, 1))
-
-            # set it's position/parent
-            textfpos = (self.x, self.y)  # top left
-            textgpos = (self.x, self.y + self.height - 10)  # bot left
-
-            # center it
-
-            # draw the square
-            if init and text:
-                screen.blit(textf, textfpos)
-                screen.blit(textg, textgpos)
