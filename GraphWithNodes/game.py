@@ -1,10 +1,11 @@
 # Import a library of functions called 'pygame'
 import pygame
-import graph as graphs
-from graph import Graph
-from graph import Node
+
 import drawablenode
+import graph as graphs
 from drawablenode import *
+from graph import Graph, Node
+
 # Initialize the game engine
 pygame.init()
 
@@ -60,7 +61,15 @@ while not DONE:
     for i in NODES:
         i.draw(SCREEN, font1)
 
-    NODES[10].color = RED
+    current = NODES[0]
+    current.color = RED
+    current.adjacents = [NODES[1], NODES[10]]
+    for n in current.adjacents:
+        n.color = GREEN
+
+
+    for i in range(20, 30):
+        NODES[i].color = BLUE
 
     # Go ahead and update the SCREEN with what we've drawn.
     # This MUST happen after all the other drawing commands.
