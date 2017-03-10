@@ -5,22 +5,22 @@ class Node(object):
     '''a node'''
 
     def __init__(self, value, identifier):
-        self._value = value
-        self._identifier = identifier
+        self.__value = value
+        self.__identifier = identifier
 
     @property
     def value(self):
         '''get value'''
-        return self._value
+        return self.__value
 
     @property
     def identifier(self):
         '''id'''
-        return self._identifier
+        return self.__identifier
 
     def print_info(self):
         '''get info'''
-        print "ID:", self._identifier, "Value:", self._value
+        print "ID:", self.__identifier, "Value:", self.__value
 
 
 class Graph(object):
@@ -32,46 +32,51 @@ class Graph(object):
         self._nodes = {}
         for i in range(0, cols):
             for j in range(0, rows):
-                nodekey = str(i), ',', str(j)
+                nodekey = str(i) + ',' + str(j)
                 self._nodes[nodekey] = Node([i, j], len(self._nodes))
 
-    def nodes(self):
-        '''get nodes'''
-        return self._nodes
-
     def get_node(self, node):
-        '''get a node'''
-        nodekey = str(node[0]), ',', str(node[1])
+        '''get a node by list [1,1]'''
+        nodekey = str(node[0]) + ',' + str(node[1])
         if nodekey in self._nodes:
             return self._nodes[nodekey]
-        return None
 
 
 def get_neighbors(node, graph):
-    '''Gets the neighbors of the given node within the given graph'''
-    right = [1, 0]
-    top = [0, 1]
-    left = [-1, 0]
-    down = [0, -1]
-    dirs = [right, top, left, down]
-    neighbors = []
-    for i in dirs:
-        nodekey = [node.value[0] + i[0], node.value[1] + i[1]]
-        if graph.get_node(nodekey):
-            neighbors.append(graph.get_node(nodekey))
+    '''get neighbors for a node'''
 
+    right = [1, 0]
+    top_right = [1, 1]
+
+    top = [0, 1]
+    top_left = [-1, 1]
+
+    left = [-1, 0]
+    bottom_left = [-1, -1]
+
+    bottom = [0, -1]
+    bottom_right = [1, -1]
+    neighbors = []
+
+    dirs = [right, top_right, top, top_left,
+            left, bottom_left, bottom, bottom_right]
+
+    for i in dirs:
+        item1 = i[0] + node.value[0]
+        item2 = i[1] + node.value[1]
+        fetch_node = graph.get_node([item1, item2])
+        if fetch_node:
+            neighbors.append(fetch_node)
     return neighbors
 
 
-def test_graph():
+def test_graph(graph):
     '''abc'''
-    graph = Graph([3, 3])
-    n = graph.get_node([1, 1])
-    nays = get_neighbors(n, graph)
-    for i in nays:
-        i.print_info()
-
+    node = graph.get_node([1, 1])
+    node.print_info()
+    neighbors = get_neighbors(node, graph)
+    for neighbor in neighbors:
+        neighbor.print_info()
 
 if __name__ == "__main__":
-    print "Graph"
-    test_graph()
+    test_graph(Graph([3, 3]))
