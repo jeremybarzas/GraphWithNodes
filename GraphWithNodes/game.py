@@ -68,7 +68,7 @@ while not DONE:
         n.color = GREEN
 
     for i in range(20, 30):
-        NODES[i].color = BLUE
+        NODES[i].color = BLUE 
 
     # Go ahead and update the SCREEN with what we've drawn.
     # This MUST happen after all the other drawing commands.
