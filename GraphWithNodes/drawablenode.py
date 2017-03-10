@@ -20,7 +20,7 @@ class DrawableNode(object):
         self._f = 0
 
         # drawing vars
-        SIZE = 50
+        SIZE = 30
         self.width = SIZE
         self.height = SIZE
         self.id = id
@@ -114,9 +114,9 @@ class DrawableNode(object):
 
             # render the text
 
-            textf = font.render("F= " + str(self.f), True, (1, 1, 1))
-            textg = font.render("G= " + str(self.g) +
-                                "H= " + str(self.h), True, (1, 1, 1))
+            # textf = font.render("F= " + str(self.f), True, (1, 1, 1))
+            # textg = font.render("G= " + str(self.g) +
+                                # "H= " + str(self.h), True, (1, 1, 1))
 
             # set it's position/parent
             textfpos = (self.x, self.y)  # top left
