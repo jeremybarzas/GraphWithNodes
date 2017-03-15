@@ -1,5 +1,7 @@
-import pygame
+'''drawable node class to be used'''
+
 import math
+import pygame
 import graph
 from graph import Graph
 from graph import Node
