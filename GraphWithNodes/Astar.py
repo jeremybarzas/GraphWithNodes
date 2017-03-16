@@ -1,114 +1,119 @@
 '''AStar algorithim'''
 
-import drawablenode as dn
+class Node(object):
+    '''Node object'''
+
+    def __init__(self, pos):
+        '''node constructor'''
+        self.position = pos
+        self.gCost = 0
+        self.hCost = 0
+        self.fCost = 0
+        self.walkable = True
+        self.parent = None
+        self.neighbors = []
+        self.grid_index = 0
+
+    def set_neighbors(self, grid):
+        '''get neighbors for a node'''
+        right = [1, 0]
+        top_right = [1, 1]
+        top = [0, 1]
+        top_left = [-1, 1]
+        left = [-1, 0]
+        bottom_left = [-1, -1]
+        bottom = [0, -1]
+        bottom_right = [1, -1]
+        dirs = [right, top_right, top, top_left, left, bottom_left, bottom, bottom_right]
+        for i in dirs:
+            item1 = i[0] + self.position[0]
+            item2 = i[1] + self.position[1]
+            fetch_node = grid.get_node([item1, item2])
+            if fetch_node:
+                self.neighbors.append(fetch_node)
+
+    def print_info(self):
+        '''print info'''
+        print "ID: " + str(self.grid_index) + "  Position: " + str(self.position[0]) + ',' + str(self.position[1])
+
+
+class Grid(object):
+    '''Grid object'''
+
+    def __init__(self, size):
+        '''constructor'''
+        cols = size[0]
+        rows = size[1]
+        self.nodelist = []
+        for i in range(0, cols):
+            for j in range(0, rows):
+                self.nodelist.append(Node([i, j]))
+        for node in self.nodelist:
+            node.grid_index = self.nodelist.index(node)
+            node.set_neighbors(self)
+
+    def get_node(self, searchfor):
+        '''get a node by list [1,1]'''
+        for node in self.nodelist:
+            if node.position == searchfor:
+                return node
+
+    def print_info(self):
+        '''print node'''
+        for node in self.nodelist:
+            node.print_info()
+
 
 class AStar(object):
     '''AStar algorithim'''
 
     def __init__(self):
-        '''constuctor'''
+        '''constructor'''
 
-    # function A*(start, goal)
-    def astar(self, start, goal):
+    def manhattan_distance(self, start, goal):
+        '''manhattan distance heuristic'''
+        x_dif = abs(start.position[0] - goal.position[0])
+        y_dif = abs(start.position[1] - goal.position[1])
+        return x_dif + y_dif
+
+    def pathfind(self, start, goal):
         '''the astar search algorithim'''
-        # The set of nodes already evaluated.
-        # closedSet := {}
-        closedset = []
-
-        # The set of currently discovered nodes that are not evaluated yet.
-        # Initially, only the start node is known.
-        # openSet := {start}
-        openset = []
-        openset.append(start)
-
-        # For each node, which node it can most efficiently be reached from.
-        # If a node can be reached from many nodes, cameFrom will eventually contain the
-        # most efficient previous step.
-        # cameFrom := the empty map
-        camefrom = []
-
-        # For each node, the cost of getting from the start node to that node.
-        # gScore := map with default value of Infinity
-        gscore = []
-
-        # The cost of going from start to start is zero.
-        # gScore[start] := 0
-        gscore[start] = 0
-
-        # For each node, the total cost of getting from the start node to the goal
-        # by passing by that node. That value is partly known, partly heuristic.
-        # fScore := map with default value of Infinity
-        fscore = []
-
-        # or the first node, that value is completely heuristic.
-        # fScore[start] := heuristic_cost_estimate(start, goal)
-        fscore[start] = 0 # NEEDS TO BE CALCULATED CORRECTLY
-
-        # while openSet is not empty
-        while openset.count != 0:
-            # current := the node in openSet having the lowest fScore[] value
-            current = dn.DrawableNode([1, 1])
-
-            # if current = goal
+        print "\nStart Node:" # DEBUG STUFF
+        start.print_info() # DEBUG STUFF
+        print "Goal Node:" # DEBUG STUFF
+        goal.print_info() # DEBUG STUFF
+        openlist = []
+        closedlist = []
+        current = start
+        openlist.append(current)
+        while openlist.count != 0:
+            openlist.sort(key=lambda x: x.fCost)
+            current = openlist[0]
             if current == goal:
-                # return reconstruct_path(cameFrom, current)
-                return self.reconstruct_path(camefrom, current)
-
-            # openSet.Remove(current)
-            openset.remove(current)
-
-            # closedSet.Add(current)
-            closedset.append(current)
-
-            # for each neighbor of current
-            for neighbor in current.adjacents:
-                # if neighbor in closedSet
-                if closedset.__contains__(neighbor):
-                    # Ignore the neighbor which is already evaluated.
-                    # continue
+                print "\nCurrent Node: " # DEBUG STUFF
+                current.print_info() # DEBUG STUFF
+                closedlist.reverse()
+                return self.retrace(closedlist, current)
+            openlist.remove(current)
+            closedlist.append(current)
+            for neighbor in current.neighbors:
+                if closedlist.__contains__(neighbor):
                     continue
-
-                # The distance from start to a neighbor
-                # tentative_gScore := gScore[current] + dist_between(current, neighbor)
-                tentative_gscore = 0 # NEEDS TO BE CALCULATED CORRECTLY
-
-                # Discover a new node
-                # if neighbor not in openSet
-                if not openset.__contains__(neighbor):
-                    # openSet.Add(neighbor)
-                    openset.append(neighbor)
-                # else if tentative_gScore >= gScore[neighbor]
-                elif tentative_gscore >= neighbor.g:
-                    # This is not a better path.
-                    # continue
+                tentative_gCost = current.gCost + neighbor.gCost
+                if not openlist.__contains__(neighbor):
+                    if neighbor.walkable:
+                        openlist.append(neighbor)
+                elif tentative_gCost >= neighbor.gCost:
                     continue
-
-                # This path is the best until now. Record it!
-                # cameFrom[neighbor] := current
-                camefrom[neighbor] = current
-
-                # gScore[neighbor] := tentative_gScore
-                gscore[neighbor] = tentative_gscore
-
-                # fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
-                fscore[neighbor] = 0 # NEEDS TO BE CALCULATED CORRECTLY
-
-        # return failure
+                neighbor.parent = current
+                neighbor.gCost = tentative_gCost
+                neighbor.hCost = self.manhattan_distance(neighbor, goal)
+                neighbor.fCost = neighbor.gCost + neighbor.hCost
         return False
 
-    # function reconstruct_path(cameFrom, current)
-    def reconstruct_path(self, cameform, current):
+    def retrace(self, path, current):
         '''reconstructs the path'''
-        # total_path := [current]
-        total_path = []
-
-        # while current in cameFrom.Keys:
-        while cameform.__contains__(current):
-            # current := cameFrom[current]
-            current = cameform[current]
-
-            # total_path.append(current)
-            total_path.append(current)
-
-        # return total_path
-        return total_path
+        print "Retrace has been called" # DEBUG STUFF
+        print "\nPath that was taken:" # DEBUG STUFF
+        for node in path: # DEBUG STUFF
+            node.print_info() # DEBUG STUFF
