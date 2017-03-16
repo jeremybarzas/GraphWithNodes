@@ -5,6 +5,7 @@ from Astar import AStar
 
 def unit_test():
     '''unit test'''
+    print "\nBegin unit test\n"
     grid = Grid([10, 10])
     grid.print_info()
 
