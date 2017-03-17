@@ -4,12 +4,12 @@
 class Node(object):
     '''Node object'''
 
-    def __init__(self, pos):
+    def __init__(self, position):
         '''node constructor'''
-        self.position = pos
-        self.gCost = 0
-        self.hCost = 0
-        self.fCost = 0
+        self.pos = position
+        self.gcost = 0
+        self.hcost = 0
+        self.fcost = 0
         self.walkable = True
         self.parent = None
         self.neighbors = []
@@ -25,24 +25,27 @@ class Node(object):
         bottom_left = [-1, -1]
         bottom = [0, -1]
         bottom_right = [1, -1]
-        dirs = [right, top_right, top, top_left, left, bottom_left, bottom, bottom_right]
+        dirs = [right, top_right, top, top_left,
+                left, bottom_left, bottom, bottom_right]
         for i in dirs:
-            item1 = i[0] + self.position[0]
-            item2 = i[1] + self.position[1]
+            item1 = i[0] + self.pos[0]
+            item2 = i[1] + self.pos[1]
             fetch_node = grid.get_node([item1, item2])
             if fetch_node:
                 self.neighbors.append(fetch_node)
 
     def dist_between(self, neighbor):
         '''get g score '''
-        if self.position[0] == neighbor.position[0] or self.position[1] == neighbor.position[1]:
+        if self.pos[0] == neighbor.pos[0] or self.pos[1] == neighbor.pos[1]:
             return 10
         else:
             return 14
 
     def print_info(self):
         '''print info'''
-        print "ID: " + str(self.grid_index) + "  Position: " + str(self.position[0]) + ',' + str(self.position[1])
+        line1 = "ID: " + str(self.grid_index)
+        line2 = "  Position: " + str(self.pos[0]) + ',' + str(self.pos[1])
+        print line1 + line2
 
 
 class Grid(object):
@@ -63,7 +66,7 @@ class Grid(object):
     def get_node(self, searchfor):
         '''get a node by list [1,1]'''
         for node in self.nodelist:
-            if node.position == searchfor:
+            if node.pos == searchfor:
                 return node
 
     def print_info(self):
@@ -80,8 +83,8 @@ class AStar(object):
 
     def manhattan_distance(self, start, goal):
         '''manhattan distance heuristic'''
-        x_dif = abs(start.position[0] - goal.position[0])
-        y_dif = abs(start.position[1] - goal.position[1])
+        x_dif = abs(start.pos[0] - goal.pos[0])
+        y_dif = abs(start.pos[1] - goal.pos[1])
         return (x_dif + y_dif) * 10
 
     def pathfind(self, start, goal):
@@ -95,7 +98,7 @@ class AStar(object):
         current = start
         openlist.append(current)
         while openlist.count != 0:
-            openlist.sort(key=lambda x: x.fCost)
+            openlist.sort(key=lambda x: x.fcost)
             current = openlist[0]
             if current == goal:
                 print "\nCurrent Node: "  # DEBUG STUFF
@@ -106,15 +109,15 @@ class AStar(object):
             for neighbor in current.neighbors:
                 if neighbor in closedlist or not neighbor.walkable:
                     continue
-                tentative_gCost = current.gCost + current.dist_between(neighbor)
+                tent_gcost = current.gcost + current.dist_between(neighbor)
                 if neighbor not in openlist:
                     openlist.append(neighbor)
-                elif tentative_gCost > neighbor.gCost:
+                elif tent_gcost > neighbor.gcost:
                     continue
                 neighbor.parent = current
-                neighbor.gCost = tentative_gCost
+                neighbor.gcost = tent_gcost
                 neighbor.hCost = self.manhattan_distance(neighbor, goal)
-                neighbor.fCost = neighbor.gCost + neighbor.hCost
+                neighbor.fCost = neighbor.gcost + neighbor.hcost
         return False
 
     def retrace(self, node):
