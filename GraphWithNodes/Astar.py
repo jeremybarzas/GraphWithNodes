@@ -1,5 +1,6 @@
 '''AStar algorithim'''
 
+
 class Node(object):
     '''Node object'''
 
@@ -15,7 +16,7 @@ class Node(object):
         self.grid_index = 0
 
     def set_neighbors(self, grid):
-        '''get neighbors for a node'''
+        '''set neighbors for a node'''
         right = [1, 0]
         top_right = [1, 1]
         top = [0, 1]
@@ -31,6 +32,13 @@ class Node(object):
             fetch_node = grid.get_node([item1, item2])
             if fetch_node:
                 self.neighbors.append(fetch_node)
+
+    def dist_between(self, neighbor):
+        '''get g score '''
+        if self.position[0] == neighbor.position[0] or self.position[1] == neighbor.position[1]:
+            return 10
+        else:
+            return 14
 
     def print_info(self):
         '''print info'''
@@ -74,14 +82,14 @@ class AStar(object):
         '''manhattan distance heuristic'''
         x_dif = abs(start.position[0] - goal.position[0])
         y_dif = abs(start.position[1] - goal.position[1])
-        return x_dif + y_dif
+        return (x_dif + y_dif) * 10
 
     def pathfind(self, start, goal):
         '''the astar search algorithim'''
-        print "\nStart Node:" # DEBUG STUFF
-        start.print_info() # DEBUG STUFF
-        print "Goal Node:" # DEBUG STUFF
-        goal.print_info() # DEBUG STUFF
+        print "\nStart Node:"  # DEBUG STUFF
+        start.print_info()  # DEBUG STUFF
+        print "Goal Node:"  # DEBUG STUFF
+        goal.print_info()  # DEBUG STUFF
         openlist = []
         closedlist = []
         current = start
@@ -90,20 +98,18 @@ class AStar(object):
             openlist.sort(key=lambda x: x.fCost)
             current = openlist[0]
             if current == goal:
-                print "\nCurrent Node: " # DEBUG STUFF
-                current.print_info() # DEBUG STUFF
-                closedlist.reverse()
-                return self.retrace(closedlist, current)
+                print "\nCurrent Node: "  # DEBUG STUFF
+                current.print_info()  # DEBUG STUFF
+                return self.retrace(current)
             openlist.remove(current)
             closedlist.append(current)
             for neighbor in current.neighbors:
-                if closedlist.__contains__(neighbor):
+                if neighbor in closedlist or not neighbor.walkable:
                     continue
-                tentative_gCost = current.gCost + neighbor.gCost
-                if not openlist.__contains__(neighbor):
-                    if neighbor.walkable:
-                        openlist.append(neighbor)
-                elif tentative_gCost >= neighbor.gCost:
+                tentative_gCost = current.gCost + current.dist_between(neighbor)
+                if neighbor not in openlist:
+                    openlist.append(neighbor)
+                elif tentative_gCost > neighbor.gCost:
                     continue
                 neighbor.parent = current
                 neighbor.gCost = tentative_gCost
@@ -111,9 +117,15 @@ class AStar(object):
                 neighbor.fCost = neighbor.gCost + neighbor.hCost
         return False
 
-    def retrace(self, path, current):
+    def retrace(self, node):
         '''reconstructs the path'''
-        print "Retrace has been called" # DEBUG STUFF
-        print "\nPath that was taken:" # DEBUG STUFF
-        for node in path: # DEBUG STUFF
-            node.print_info() # DEBUG STUFF
+        print "Retrace has been called"  # DEBUG STUFF
+        print "Path that was taken:"  # DEBUG STUFF
+        final_path = []
+        iterator = node
+        while iterator is not None:
+            final_path.append(iterator)
+            iterator = iterator.parent
+        for node in final_path:  # DEBUG STUFF
+            node.print_info()  # DEBUG STUFF
+        return final_path
