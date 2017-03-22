@@ -39,9 +39,8 @@ pygame.display.set_caption("Example code for the draw module")
 DONE = False
 CLOCK = pygame.time.Clock()
 
-pygame.font.init()
-font1 = pygame.font.Font(None, 14)
-font2 = pygame.font.Font(None, 28)
+# pygame.font.init()
+# font1 = pygame.font.Font(None, 14)
 while not DONE:
 
     # This limits the while loop to a max of 10 times per second.
@@ -59,16 +58,7 @@ while not DONE:
     SCREEN.fill(WHITE)
     # Draw a circle
     for i in NODES:
-        i.draw(SCREEN, font1)
-
-    current = NODES[0]
-    current.color = RED
-    current.adjacents = [NODES[1], NODES[10]]
-    for n in current.adjacents:
-        n.color = GREEN
-
-    for i in range(20, 30):
-        NODES[i].color = BLUE 
+        i.draw(SCREEN)
 
     # Go ahead and update the SCREEN with what we've drawn.
     # This MUST happen after all the other drawing commands.

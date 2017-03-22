@@ -105,7 +105,7 @@ class DrawableNode(object):
         print("neighbors:", ids)
         print("index: ", self.index)
 
-    def draw(self, screen, font, init=True, text=True):
+    def draw(self, screen):
         # pygame.draw.rect(screen, self._color, self.rect)
         self.surface.fill(self._color)
         screen.blit(self.surface, self.screenpos)
